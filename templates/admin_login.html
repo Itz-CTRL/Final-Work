@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SHS Portal - Admin Login</title>
+  <link rel="icon" type="image/x-icon" href="gctu.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* CSS Variables for easy customization */
+    :root {
+      --navy-blue: #1e3a8a;
+      --navy-blue-dark: #1e40af;
+      --gold: #fbbf24;
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    /* Reset default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body styling with gradient background */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-dark) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Main container for the login card */
+    .login-container {
+      width: 100%;
+      max-width: 450px;
+    }
+
+    /* White card that contains the form */
+    .login-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Header section with logo and title */
+    .card-header {
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-dark) 100%);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Admin badge */
+    .admin-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--gold);
+      color: var(--navy-blue);
+      padding: 0.375rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Logo container */
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      background: var(--white);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--navy-blue);
+    }
+
+    /* Portal title */
+    .portal-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Portal subtitle */
+    .portal-subtitle {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Body section containing the form */
+    .card-body {
+      padding: 2.5rem 2rem;
+    }
+
+    /* Welcome text section */
+    .welcome-text {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .welcome-text h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-text p {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    /* Security notice */
+    .security-notice {
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+    }
+
+    .security-notice-icon {
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+
+    .security-notice-text {
+      font-size: 0.75rem;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    /* Form group for each input field */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Label for input fields */
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Wrapper for input with icon */
+    .input-wrapper {
+      position: relative;
+    }
+
+    /* Icon inside input field */
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-600);
+      pointer-events: none;
+    }
+
+    /* Input field styling */
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--gray-800);
+      transition: all 0.2s ease;
+    }
+
+    /* Input field on focus */
+    .form-input:focus {
+      outline: none;
+      border-color: var(--navy-blue);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    /* Password visibility toggle button */
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--gray-600);
+      transition: color 0.2s ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--navy-blue);
+    }
+
+    /* Button styling */
+    .btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Primary button (login button) */
+    .btn-primary {
+      background: var(--navy-blue);
+      color: var(--white);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--navy-blue-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Back to student login link */
+    .student-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .student-link a {
+      color: var(--navy-blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .student-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Alert message box */
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Show alert when active */
+    .alert.show {
+      display: flex;
+    }
+
+    /* Error alert styling */
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    /* Success alert styling */
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    /* Loading spinner animation */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.75rem;
+    }
+
+    /* Responsive design for mobile */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .card-body {
+        padding: 2rem 1.5rem;
+      }
+
+      .card-header {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Header with logo and title -->
+      <div class="card-header">
+        <span class="admin-badge">Admin Access</span>
+        <div class="logo-container">
+          <i data-lucide="shield" style="width: 40px; height: 40px;"></i>
+        </div>
+        <h1 class="portal-title">Admin Portal</h1>
+        <p class="portal-subtitle">Senior High School Management System</p>
+      </div>
+
+      <!-- Form body -->
+      <div class="card-body">
+        <div class="welcome-text">
+          <h2>Administrator Login</h2>
+          <p>Enter your admin credentials to continue</p>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="security-notice">
+          <i data-lucide="shield-alert" class="security-notice-icon" style="width: 20px; height: 20px;"></i>
+          <div class="security-notice-text">
+            <strong>Authorized Personnel Only</strong><br>
+            This area is restricted to authorized administrators. All access attempts are logged.
+          </div>
+        </div>
+
+        <!-- Error message alert (hidden by default) -->
+        <div class="alert alert-error" id="errorAlert">
+          <i data-lucide="alert-circle" style="width: 20px; height: 20px;"></i>
+          <span id="errorMessage"></span>
+        </div>
+
+        <!-- Success message alert (hidden by default) -->
+        <div class="alert alert-success" id="successAlert">
+          <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+          <span id="successMessage"></span>
+        </div>
+
+        <!-- Server-side flash messages (Flask) -->
+        <div id="serverMessages">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert {{ 'alert-success' if category == 'success' else 'alert-error' }} flashed-alert show" role="status">
+                  <i data-lucide="{{ 'check-circle' if category == 'success' else 'alert-circle' }}" style="width:20px; height:20px;"></i>
+                  <span style="margin-left:0.5rem;">{{ message }}</span>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+  <!-- Login Form -->
+  <form id="adminLoginForm" method="post" action="{{ url_for('admin_login') }}">
+          <!-- Admin Email/Username input field -->
+          <div class="form-group">
+            <label class="form-label" for="adminEmail">Admin Email</label>
+            <div class="input-wrapper">
+              <i data-lucide="user-cog" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="email" 
+                id="adminEmail" 
+                name="adminEmail"
+                class="form-input" 
+                placeholder="Enter admin email"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Password input field -->
+          <div class="form-group">
+            <label class="form-label" for="adminPassword">Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="password" 
+                id="adminPassword" 
+                name="adminPassword"
+                class="form-input" 
+                placeholder="Enter your password"
+                required
+              >
+              <!-- Eye icon to toggle password visibility -->
+              <span class="password-toggle" id="passwordToggle">
+                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Login button -->
+          <button type="submit" class="btn btn-primary" id="loginBtn">
+            <span id="btnText">Sign In as Admin</span>
+          </button>
+        </form>
+
+        <!-- Student login link -->
+        <div class="student-link">
+          Not an admin? <a href="{{ url_for('login') }}">Student Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2025 SHS Portal. All rights reserved.</p>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons (makes the icons appear)
+    lucide.createIcons();
+
+    // Get references to HTML elements we'll use in JavaScript
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('adminPassword');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const btnText = document.getElementById('btnText');
+
+    // PASSWORD VISIBILITY TOGGLE
+    // This allows admins to see/hide their password by clicking the eye icon
+    passwordToggle.addEventListener('click', function() {
+      // Check current type of password field
+      if (passwordInput.type === 'password') {
+        // If it's hidden, show it
+        passwordInput.type = 'text';
+        // Change icon to "eye-off"
+        passwordToggle.querySelector('i').setAttribute('data-lucide', 'eye-off');
+      } else {
+        // If it's visible, hide it
+        passwordInput.type = 'password';
+        // Change icon back to "eye"
+        passwordToggle.querySelector('i').setAttribute('data-lucide', 'eye');
+      }
+      // Refresh icons to show the new icon
+      lucide.createIcons();
+    });
+
+    // SHOW ERROR MESSAGE FUNCTION
+    // This function displays error messages to the admin
+    function showError(message) {
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const successAlert = document.getElementById('successAlert');
+      
+      // Hide success message if showing
+      successAlert.classList.remove('show');
+      
+      // Set the error message text
+      errorMessage.textContent = message;
+      // Show the error alert
+      errorAlert.classList.add('show');
+      // Refresh icons
+      lucide.createIcons();
+      
+      // Auto-hide after 5 seconds
+      setTimeout(function() {
+        errorAlert.classList.remove('show');
+      }, 5000);
+    }
+
+    // SHOW SUCCESS MESSAGE FUNCTION
+    // This function displays success messages to the admin
+    function showSuccess(message) {
+      const successAlert = document.getElementById('successAlert');
+      const successMessage = document.getElementById('successMessage');
+      const errorAlert = document.getElementById('errorAlert');
+      
+      // Hide error message if showing
+      errorAlert.classList.remove('show');
+      
+      // Set the success message text
+      successMessage.textContent = message;
+      // Show the success alert
+      successAlert.classList.add('show');
+      // Refresh icons
+      lucide.createIcons();
+    }
+
+    // Admin login is handled by the server via form POST to /admin/login
+
+    // Auto-hide server flash messages with smooth transition
+    (function() {
+      const serverMessages = document.getElementById('serverMessages');
+      if (!serverMessages) return;
+      const alerts = Array.from(serverMessages.querySelectorAll('.flashed-alert'));
+      if (!alerts.length) return;
+      lucide.createIcons();
+      alerts.forEach((el, idx) => {
+        el.style.transition = 'opacity 300ms ease, transform 300ms ease, max-height 300ms ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.maxHeight = '200px';
+        setTimeout(() => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-8px)';
+          el.style.maxHeight = '0';
+          setTimeout(() => el.remove(), 350);
+        }, 4000 + idx * 200);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHS Admin Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="gctu.ico" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* CSS Variables for easy customization */
+    :root {
+      --navy-blue: #1e3a8a;
+      --navy-blue-dark: #1e40af;
+      --navy-blue-light: #3b82f6;
+      --gold: #fbbf24;
+      --gold-dark: #f59e0b;
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+    }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--navy-blue), var(--navy-blue-light));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+    }
+
+    .logo-text h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+    }
+
+    .logo-text p {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Admin notifications panel */
+    .admin-notifications-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 2400;
+      display: none;
+    }
+
+    .admin-notifications-overlay.active { display: block; }
+
+    .admin-notifications-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: -6px 0 30px rgba(0,0,0,0.12);
+      z-index: 2500;
+      transition: right 260ms ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-notifications-panel.active { right: 0; }
+
+    .admin-notifications-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .admin-notifications-body { padding: 1rem; overflow-y: auto; flex:1; }
+    .admin-notification-item { padding: 0.75rem; margin-bottom: 0.6rem; border-radius: 8px; background: var(--gray-50); border-left: 4px solid var(--navy-blue); }
+    .admin-notification-item.unread { border-left-color: var(--gold); background: rgba(255, 249, 230, 0.9); }
+    .notification-badge-admin { position: absolute; top: -6px; right: -6px; width:18px; height:18px; background: var(--danger); color: #fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:700; }
+
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--gray-100);
+      border-radius: 8px;
+    }
+
+    .admin-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--navy-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .admin-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .logout-btn {
+      padding: 0.5rem 1rem;
+      background: var(--danger);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #dc2626;
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: var(--white);
+      padding: 1.5rem 0;
+      box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--gray-700);
+      font-weight: 500;
+    }
+
+    .nav-item:hover {
+      background: var(--gray-50);
+      color: var(--navy-blue);
+    }
+
+    .nav-item.active {
+      background: var(--navy-blue);
+      color: var(--white);
+      border-left: 4px solid var(--gold);
+    }
+
+    /* Content Area */
+    .content {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+    }
+
+    .stat-icon.pending { background: var(--warning); }
+    .stat-icon.resolved { background: var(--success); }
+    .stat-icon.total { background: var(--info); }
+    .stat-icon.transcript { background: var(--navy-blue); }
+
+    .stat-info h3 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .stat-info p {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    /* Search and Filters */
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-600);
+    }
+
+    .filter-select {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    /* Table */
+    .table-container {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--gray-100);
+    }
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 1rem;
+      border-top: 1px solid var(--gray-200);
+      font-size: 0.875rem;
+    }
+
+    tbody tr:hover {
+      background: var(--gray-50);
+    }
+
+    .status-badge {
+      padding: 0.375rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .status-in-review {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--info);
+    }
+
+    .status-resolved {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-view {
+      background: var(--info);
+      color: var(--white);
+    }
+
+    .btn-view:hover {
+      background: var(--navy-blue);
+    }
+
+    .btn-delete {
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    .btn-delete:hover {
+      background: #dc2626;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .detail-row {
+      margin-bottom: 1rem;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+      font-size: 0.875rem;
+      color: var(--gray-800);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .btn-primary {
+      padding: 0.75rem 1.5rem;
+      background: var(--navy-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-blue-dark);
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      background: var(--gray-200);
+      color: var(--gray-700);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      background: var(--gray-100);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+    }
+
+    /* Notification Form */
+    .notification-form {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+    }
+
+    /* Alert Styles for Flash Messages */
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideDown 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--success);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .flash-messages-container {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1500;
+      width: 90%;
+      max-width: 600px;
+      pointer-events: none;
+    }
+
+    .flash-messages-container .alert {
+      pointer-events: auto;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .header-content {
+        padding: 1rem;
+      }
+
+      .content {
+        padding: 1rem;
+      }
+
+      .admin-info span {
+        display: none;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th, td {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .flash-messages-container {
+        width: 95%;
+        top: 70px;
+      }
+    }
+
+    /* Page sections - hide all by default */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <i data-lucide="shield" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Admin Dashboard</h1>
+          <p>SHS Alumni Portal</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="admin-info">
+          <div class="admin-avatar">AD</div>
+          <span class="admin-name">Administrator</span>
+        </div>
+        <div style="position:relative;">
+          <button class="icon-btn" id="adminNotificationsBtn" title="Notifications" onclick="toggleAdminNotifications()">
+            <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
+          </button>
+          <span id="adminNotificationCount" class="notification-badge-admin" style="display:none;">0</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">
+          <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Notifications Panel -->
+  <div id="adminNotificationsOverlay" class="admin-notifications-overlay" onclick="toggleAdminNotifications()"></div>
+  <div id="adminNotificationsPanel" class="admin-notifications-panel" aria-hidden="true">
+    <div class="admin-notifications-header">
+      <strong>Notifications</strong>
+      <button class="modal-close" onclick="toggleAdminNotifications()"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
+    </div>
+    <div class="admin-notifications-body" id="adminNotificationsBody">
+      <div style="padding:1rem; color:var(--gray-600)">Loading...</div>
+    </div>
+  </div>
+
+  {# Flash messages from Flask (success/error) - Fixed position at top #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages-container" id="flashMessages">
+        {% for category, message in messages %}
+          <div class="alert {{ 'alert-success' if category == 'success' else 'alert-error' }}">
+            <i data-lucide="{{ 'check-circle' if category == 'success' else 'alert-circle' }}" style="width:20px; height:20px;"></i>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul class="nav-menu">
+        <li class="nav-item active" onclick="showPage('dashboard')">
+          <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item" onclick="showPage('complaints')">
+          <i data-lucide="message-square" style="width: 20px; height: 20px;"></i>
+          <span>View Complaints</span>
+        </li>
+        <li class="nav-item" onclick="showPage('users')">
+          <i data-lucide="users" style="width: 20px; height: 20px;"></i>
+          <span>Users</span>
+        </li>
+        <li class="nav-item" onclick="showPage('transcripts')">
+          <i data-lucide="file-text" style="width: 20px; height: 20px;"></i>
+          <span>Transcript Requests</span>
+        </li>
+        <li class="nav-item" onclick="showPage('notifications')">
+          <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
+          <span>Send Notifications</span>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+      <!-- Dashboard Page -->
+      <div class="page-section active" id="dashboard-page">
+        <div class="page-header">
+          <h2 class="page-title">Dashboard Overview</h2>
+          <p class="page-subtitle">Monitor and manage all portal activities</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon total">
+              <i data-lucide="message-circle" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalComplaints">0</h3>
+              <p>Total Complaints</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon pending">
+              <i data-lucide="clock" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="pendingComplaints">0</h3>
+              <p>Pending</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon resolved">
+              <i data-lucide="check-circle" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="resolvedComplaints">0</h3>
+              <p>Resolved</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon transcript">
+              <i data-lucide="file-check" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalTranscripts">0</h3>
+              <p>Transcript Requests</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Recent Activity</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="recentActivity">
+              <tr>
+                <td colspan="4">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i data-lucide="inbox" style="width: 40px; height: 40px;"></i>
+                    </div>
+                    <p>No recent activity</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Complaints Page -->
+      <div class="page-section" id="complaints-page">
+        <div class="page-header">
+          <h2 class="page-title">Manage Complaints</h2>
+          <p class="page-subtitle">View and update student complaints</p>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="controls">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+            <input type="text" id="searchComplaints" placeholder="Search by name, email, or ID..." onkeyup="filterComplaints()">
+          </div>
+          <select class="filter-select" id="statusFilter" onchange="filterComplaints()">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="in-review">In Review</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </div>
+
+        <!-- Complaints Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsTable">
+              <!-- Complaints will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Transcripts Page -->
+      <div class="page-section" id="transcripts-page">
+        <div class="page-header">
+          <h2 class="page-title">Transcript Requests</h2>
+          <p class="page-subtitle">Manage transcript and testimonial requests</p>
+        </div>
+
+        <!-- Search -->
+        <div class="controls">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+            <input type="text" id="searchTranscripts" placeholder="Search by name, email, or voucher code..." onkeyup="filterTranscripts()">
+          </div>
+        </div>
+
+        <!-- Transcripts Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Voucher Code</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transcriptsTable">
+              <!-- Transcripts will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users Page -->
+      <div class="page-section" id="users-page">
+        <div class="page-header">
+          <h2 class="page-title">Registered Users</h2>
+          <p class="page-subtitle">List of signed-up users</p>
+        </div>
+
+        <div class="controls">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+            <input type="text" id="searchUsers" placeholder="Search by name or email..." onkeyup="filterUsers()">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable">
+              <!-- Users will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Notifications Page -->
+      <div class="page-section" id="notifications-page">
+        <div class="page-header">
+          <h2 class="page-title">Send Notifications</h2>
+          <p class="page-subtitle">Send updates to students</p>
+        </div>
+
+        <div class="notification-form">
+          <div class="form-group">
+            <label class="form-label">Recipient</label>
+            <select class="form-select" id="notificationRecipient">
+              <option value="all">All Students</option>
+              <option value="specific">Specific Student (by email)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="specificEmailGroup" style="display: none;">
+            <label class="form-label">Student Email</label>
+            <input type="email" class="form-select" id="specificEmail" placeholder="student@example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" id="notificationMessage" placeholder="Enter your notification message..."></textarea>
+          </div>
+
+          <button class="btn-primary" onclick="sendNotification()">
+            <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+            Send Notification
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Complaint Detail Modal -->
+  <div class="modal" id="complaintModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Complaint Details</h3>
+        <button class="modal-close" onclick="closeModal('complaintModal')">
+          <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="complaintDetails">
+        <!-- Details will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('complaintModal')">Close</button>
+        <button class="btn-primary" onclick="saveComplaintUpdate()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transcript Detail Modal -->
+  <div class="modal" id="transcriptModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Request Details</h3>
+        <button class="modal-close" onclick="closeModal('transcriptModal')">
+          <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="transcriptDetails">
+        <!-- Details will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('transcriptModal')">Close</button>
+        <button class="btn-primary" onclick="saveTranscriptUpdate()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Detail Modal -->
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">User Details</h3>
+        <button class="modal-close" onclick="closeModal('userModal')">
+          <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="userDetails">
+        <!-- User details loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('userModal')">Close</button>
+        <button class="btn-primary" id="userDeleteBtn">Delete User</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  // expose current user email for admin notification calls
+  const CURRENT_USER_EMAIL = "{{ session.get('email','') }}";
+
+    // Utility: ensure flash container and show helpers
+    function _ensureFlashContainer() {
+      let container = document.getElementById('flashMessages');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'flashMessages';
+        container.className = 'flash-messages-container';
+        document.body.appendChild(container);
+      }
+      return container;
+    }
+
+    function showError(message, timeout = 5000) {
+      const container = _ensureFlashContainer();
+      const el = document.createElement('div');
+      el.className = 'alert alert-error';
+      el.innerHTML = `<i data-lucide="alert-circle" style="width:20px; height:20px;"></i><span>${message}</span>`;
+      container.appendChild(el);
+      lucide.createIcons();
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, timeout);
+    }
+
+    function showSuccess(message, timeout = 4000) {
+      const container = _ensureFlashContainer();
+      const el = document.createElement('div');
+      el.className = 'alert alert-success';
+      el.innerHTML = `<i data-lucide="check-circle" style="width:20px; height:20px;"></i><span>${message}</span>`;
+      container.appendChild(el);
+      lucide.createIcons();
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, timeout);
+    }
+
+    // Simple in-app confirm dialog using modal
+    function showConfirm(message, onConfirm) {
+      // create modal elements if absent
+      let conf = document.getElementById('inAppConfirmModal');
+      if (!conf) {
+        conf = document.createElement('div');
+        conf.className = 'modal';
+        conf.id = 'inAppConfirmModal';
+        conf.innerHTML = `
+          <div class="modal-content">
+            <div class="modal-header"><h3 class="modal-title">Confirm</h3></div>
+            <div class="modal-body"><p id="inAppConfirmMessage"></p></div>
+            <div class="modal-footer">
+              <button class="btn-secondary" id="inAppConfirmCancel">Cancel</button>
+              <button class="btn-primary" id="inAppConfirmOk">OK</button>
+            </div>
+          </div>`;
+        document.body.appendChild(conf);
+        document.getElementById('inAppConfirmCancel').addEventListener('click', () => { conf.classList.remove('active'); });
+      }
+      document.getElementById('inAppConfirmMessage').textContent = message;
+      conf.classList.add('active');
+      const okBtn = document.getElementById('inAppConfirmOk');
+      const handler = async () => {
+        try { await onConfirm(); } finally { conf.classList.remove('active'); okBtn.removeEventListener('click', handler); }
+      };
+      okBtn.addEventListener('click', handler);
+    }
+
+    // Admin pages rely on server-side session; data is fetched from backend APIs.
+
+    // Navigation between pages
+    function showPage(pageName) {
+      // Hide all pages
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // Show selected page
+      document.getElementById(pageName + '-page').classList.add('active');
+
+      // Add active class to clicked nav item
+      event.target.closest('.nav-item').classList.add('active');
+
+      // Load data for the page
+      if (pageName === 'dashboard') {
+        loadDashboard();
+      } else if (pageName === 'complaints') {
+        loadComplaints();
+      } else if (pageName === 'transcripts') {
+        loadTranscripts();
+      }
+
+      lucide.createIcons();
+    }
+
+    // Load Dashboard Statistics from API
+    async function loadDashboard() {
+      try {
+        const [complaintsRes, transcriptsRes] = await Promise.all([
+          fetch('/api/complaints'),
+          fetch('/api/transcripts')
+        ]);
+        const complaintsData = await complaintsRes.json();
+        const transcriptsData = await transcriptsRes.json();
+        const complaints = complaintsData.complaints || [];
+        const transcripts = transcriptsData.transcripts || [];
+
+        document.getElementById('totalComplaints').textContent = complaints.length;
+        document.getElementById('pendingComplaints').textContent = complaints.filter(c => c.status === 'pending').length;
+        document.getElementById('resolvedComplaints').textContent = complaints.filter(c => c.status === 'resolved').length;
+        document.getElementById('totalTranscripts').textContent = transcripts.length;
+
+        const recentActivity = document.getElementById('recentActivity');
+        const recent = [...complaints.map(c => ({
+          subject: c.title,
+          category: c.category || 'Complaint',
+          status: c.status,
+          date: c.created_at
+        })), ...transcripts.map(t => ({
+          subject: t.type,
+          category: 'Transcript',
+          status: t.status,
+          date: t.created_at
+        }))]
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 5);
+
+        if (recent.length === 0) {
+          recentActivity.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon"><i data-lucide="inbox" style="width: 40px; height: 40px;"></i></div><p>No recent activity</p></div></td></tr>`;
+        } else {
+          recentActivity.innerHTML = recent.map(item => `
+            <tr>
+              <td>${item.subject}</td>
+              <td>${item.category}</td>
+              <td><span class="status-badge status-${item.status}">${item.status}</span></td>
+              <td>${new Date(item.date).toLocaleString()}</td>
+            </tr>
+          `).join('');
+        }
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load dashboard', err);
+      }
+    }
+
+    // Load Complaints Table from API
+    async function loadComplaints() {
+      try {
+        const res = await fetch('/api/complaints');
+        const data = await res.json();
+        const complaints = data.complaints || [];
+        const table = document.getElementById('complaintsTable');
+
+        if (complaints.length === 0) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-icon">
+                    <i data-lucide="message-square" style="width: 40px; height: 40px;"></i>
+                  </div>
+                  <p>No complaints found</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          table.innerHTML = complaints.map(complaint => `
+            <tr data-id="${complaint.id}">
+              <td>${complaint.id}</td>
+              <td>${complaint.student_email || ''}</td>
+              <td>${complaint.student_email || ''}</td>
+              <td>${complaint.category || ''}</td>
+              <td><span class="status-badge status-${complaint.status}">${complaint.status}</span></td>
+              <td>${new Date(complaint.created_at).toLocaleString()}</td>
+              <td>
+                <button class="action-btn btn-view" onclick="viewComplaint(${complaint.id})">
+                  <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                  View
+                </button>
+                <button class="action-btn btn-delete" onclick="deleteComplaint(${complaint.id})">
+                  <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load complaints', err);
+      }
+    }
+
+    // Filter Complaints (client-side filter after reload)
+    function filterComplaints() {
+      const searchTerm = document.getElementById('searchComplaints').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+
+      // Re-load and filter from API then render
+      fetch('/api/complaints')
+        .then(r => r.json())
+        .then(data => {
+          const complaints = data.complaints || [];
+          const filtered = complaints.filter(complaint => {
+            const matchesSearch = (complaint.student_email || '').toLowerCase().includes(searchTerm) || (complaint.id || '').toString().toLowerCase().includes(searchTerm) || (complaint.title || '').toLowerCase().includes(searchTerm);
+            const matchesStatus = statusFilter === 'all' || complaint.status === statusFilter;
+            return matchesSearch && matchesStatus;
+          });
+
+          const table = document.getElementById('complaintsTable');
+          table.innerHTML = filtered.map(complaint => `
+            <tr data-id="${complaint.id}">
+              <td>${complaint.id}</td>
+              <td>${complaint.student_email || ''}</td>
+              <td>${complaint.student_email || ''}</td>
+              <td>${complaint.category || ''}</td>
+              <td><span class="status-badge status-${complaint.status}">${complaint.status}</span></td>
+              <td>${new Date(complaint.created_at).toLocaleString()}</td>
+              <td>
+                <button class="action-btn btn-view" onclick="viewComplaint(${complaint.id})">
+                  <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                  View
+                </button>
+                <button class="action-btn btn-delete" onclick="deleteComplaint(${complaint.id})">
+                  <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+
+          lucide.createIcons();
+        });
+    }
+
+    // View Complaint Details (loads from API)
+    let currentComplaintId = null;
+    async function viewComplaint(id) {
+      currentComplaintId = id;
+      try {
+        const res = await fetch('/api/complaints');
+        const data = await res.json();
+        const complaint = (data.complaints || []).find(c => c.id === id || c.id === Number(id));
+        if (!complaint) return;
+
+        const detailsHtml = `
+          <div class="detail-row">
+            <div class="detail-label">Complaint ID</div>
+            <div class="detail-value">${complaint.id}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Student Email</div>
+            <div class="detail-value">${complaint.student_email}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Category</div>
+            <div class="detail-value">${complaint.category}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Title</div>
+            <div class="detail-value">${complaint.title}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Description</div>
+            <div class="detail-value">${complaint.description}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Date Submitted</div>
+            <div class="detail-value">${new Date(complaint.created_at).toLocaleString()}</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="complaintStatus">
+              <option value="pending" ${complaint.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="in-review" ${complaint.status === 'in-review' ? 'selected' : ''}>In Review</option>
+              <option value="resolved" ${complaint.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admin Notes</label>
+            <textarea class="form-textarea" id="complaintNotes" placeholder="Add resolution notes...">${complaint.admin_notes || ''}</textarea>
+          </div>
+        `;
+
+        document.getElementById('complaintDetails').innerHTML = detailsHtml;
+        document.getElementById('complaintModal').classList.add('active');
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to fetch complaint details', err);
+      }
+    }
+
+    // Save Complaint Update (calls backend)
+    async function saveComplaintUpdate() {
+      if (!currentComplaintId) return;
+      const newStatus = document.getElementById('complaintStatus').value;
+      const notes = document.getElementById('complaintNotes').value;
+      try {
+        const res = await fetch(`/api/complaints/${currentComplaintId}/update`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus, notes })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showSuccess('Complaint updated and notification sent!');
+          closeModal('complaintModal');
+          loadComplaints();
+          loadDashboard();
+        } else {
+          showError('Failed to update complaint');
+        }
+      } catch (err) {
+        showError('Error updating complaint');
+      }
+    }
+
+    // Delete Complaint (mark as deleted via update)
+    async function deleteComplaint(id) {
+      showConfirm('Are you sure you want to delete this complaint?', async () => {
+        try {
+          // Mark status as deleted
+          const res = await fetch(`/api/complaints/${id}/update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'deleted', notes: 'Removed by admin' })
+          });
+          const data = await res.json();
+          if (data.success) {
+            showSuccess('Complaint marked as deleted');
+            loadComplaints();
+            loadDashboard();
+          } else {
+            showError('Failed to delete complaint');
+          }
+        } catch (err) {
+          showError('Error deleting complaint');
+        }
+      });
+    }
+
+    // Load Transcripts (from API)
+    async function loadTranscripts() {
+      try {
+        const res = await fetch('/api/transcripts');
+        const data = await res.json();
+        const transcripts = data.transcripts || [];
+        const table = document.getElementById('transcriptsTable');
+
+        if (transcripts.length === 0) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <div class="empty-icon">
+                    <i data-lucide="file-text" style="width: 40px; height: 40px;"></i>
+                  </div>
+                  <p>No transcript requests found</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          table.innerHTML = transcripts.map(transcript => `
+            <tr>
+              <td>${transcript.id}</td>
+              <td>${transcript.student_email || ''}</td>
+              <td>${transcript.student_email || ''}</td>
+              <td>${transcript.type}</td>
+              <td>${transcript.voucher_code || ''}</td>
+              <td><span class="status-badge status-pending">${transcript.status}</span></td>
+              <td>${new Date(transcript.created_at).toLocaleString()}</td>
+              <td>
+                <button class="action-btn btn-view" onclick="viewTranscript(${transcript.id})">
+                  <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                  View
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load transcripts', err);
+      }
+    }
+
+    // Filter Transcripts
+    function filterTranscripts() {
+      const searchTerm = document.getElementById('searchTranscripts').value.toLowerCase();
+      const transcripts = JSON.parse(localStorage.getItem('transcripts') || '[]');
+
+      const filtered = transcripts.filter(transcript => 
+        transcript.studentName.toLowerCase().includes(searchTerm) ||
+        transcript.email.toLowerCase().includes(searchTerm) ||
+        transcript.voucherCode.toLowerCase().includes(searchTerm)
+      );
+
+      const table = document.getElementById('transcriptsTable');
+      table.innerHTML = filtered.map(transcript => `
+        <tr>
+          <td>${transcript.id}</td>
+          <td>${transcript.studentName}</td>
+          <td>${transcript.email}</td>
+          <td>${transcript.type}</td>
+          <td>${transcript.voucherCode}</td>
+          <td><span class="status-badge status-pending">${transcript.status}</span></td>
+          <td>${transcript.date}</td>
+          <td>
+            <button class="action-btn btn-view" onclick="viewTranscript('${transcript.id}')">
+              <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+              View
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // View Transcript Details (fetch from server and allow admin updates)
+    let currentTranscriptId = null;
+    async function viewTranscript(id) {
+      currentTranscriptId = id;
+      try {
+        const res = await fetch('/api/transcripts');
+        const data = await res.json();
+        const transcript = (data.transcripts || []).find(t => t.id === id || t.id === Number(id));
+  if (!transcript) { showError('Transcript not found'); return; }
+
+        const detailsHtml = `
+          <div class="detail-row">
+            <div class="detail-label">Request ID</div>
+            <div class="detail-value">${transcript.id}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Student Email</div>
+            <div class="detail-value">${transcript.student_email || ''}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Type</div>
+            <div class="detail-value">${transcript.type || ''}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Voucher Code</div>
+            <div class="detail-value">${transcript.voucher_code || ''}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Number of Copies</div>
+            <div class="detail-value">${transcript.copies || ''}</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="transcriptStatus">
+              <option value="processing" ${transcript.status === 'processing' ? 'selected' : ''}>Processing</option>
+              <option value="pending" ${transcript.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="in-review" ${transcript.status === 'in-review' ? 'selected' : ''}>In Review</option>
+              <option value="completed" ${transcript.status === 'completed' ? 'selected' : ''}>Completed</option>
+              <option value="ready" ${transcript.status === 'ready' ? 'selected' : ''}>Ready</option>
+              <option value="resolved" ${transcript.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admin Notes</label>
+            <textarea class="form-textarea" id="transcriptNotes" placeholder="Add resolution notes...">${transcript.notes || ''}</textarea>
+          </div>
+        `;
+
+        document.getElementById('transcriptDetails').innerHTML = detailsHtml;
+        document.getElementById('transcriptModal').classList.add('active');
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to fetch transcript details', err);
+        showError('Failed to load transcript details');
+      }
+    }
+
+    // Save Transcript Update (calls backend)
+    async function saveTranscriptUpdate() {
+      if (!currentTranscriptId) return;
+      const newStatus = document.getElementById('transcriptStatus').value;
+      const notes = document.getElementById('transcriptNotes').value;
+      try {
+        const res = await fetch(`/api/transcripts/${currentTranscriptId}/update`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus, notes })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showSuccess('Transcript updated and notification sent!');
+          closeModal('transcriptModal');
+          loadTranscripts();
+          loadDashboard();
+        } else {
+          showError('Failed to update transcript');
+        }
+      } catch (err) {
+        console.error('Error updating transcript', err);
+        showError('Error updating transcript');
+      }
+    }
+
+    // Send Notification (calls backend)
+    async function sendNotification() {
+      const recipientSelector = document.getElementById('notificationRecipient');
+      const recipient = recipientSelector.value;
+      const message = document.getElementById('notificationMessage').value;
+      const specificEmail = document.getElementById('specificEmail').value;
+
+  if (!message) { showError('Please enter a message'); return; }
+  if (recipient === 'specific' && !specificEmail) { showError('Please enter student email'); return; }
+
+      try {
+        const res = await fetch('/api/notifications', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recipient: recipient === 'all' ? 'all' : specificEmail, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showSuccess('Notification sent successfully!');
+          document.getElementById('notificationMessage').value = '';
+          document.getElementById('specificEmail').value = '';
+          // refresh admin notifications so sender sees their message
+          loadAdminNotifications();
+        } else {
+          showError('Failed to send notification');
+        }
+      } catch (err) {
+        showError('Error sending notification');
+      }
+    }
+
+    // Show/hide specific email field
+    document.getElementById('notificationRecipient').addEventListener('change', function() {
+      const specificGroup = document.getElementById('specificEmailGroup');
+      specificGroup.style.display = this.value === 'specific' ? 'block' : 'none';
+    });
+
+    // Close Modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Admin notifications: toggle panel and load
+    function toggleAdminNotifications() {
+      const panel = document.getElementById('adminNotificationsPanel');
+      const overlay = document.getElementById('adminNotificationsOverlay');
+      const isActive = panel.classList.contains('active');
+      if (isActive) {
+        panel.classList.remove('active');
+        overlay.classList.remove('active');
+      } else {
+        panel.classList.add('active');
+        overlay.classList.add('active');
+        loadAdminNotifications();
+      }
+      lucide.createIcons();
+    }
+
+    async function loadAdminNotifications() {
+      try {
+        if (!CURRENT_USER_EMAIL) return;
+        const res = await fetch(`/api/notifications?email=${encodeURIComponent(CURRENT_USER_EMAIL)}`);
+        const data = await res.json();
+        const notifications = data.notifications || [];
+        const body = document.getElementById('adminNotificationsBody');
+        const badge = document.getElementById('adminNotificationCount');
+        const unreadCount = notifications.filter(n => !n.read_flag).length;
+        if (unreadCount > 0) { badge.style.display = 'flex'; badge.textContent = unreadCount; } else { badge.style.display = 'none'; }
+
+        if (!notifications.length) {
+          body.innerHTML = `<div style="padding:1rem; color:var(--gray-600)">No notifications</div>`;
+        } else {
+          body.innerHTML = notifications.map(n => {
+            const date = new Date(n.created_at);
+            const timeAgo = getTimeAgo(date);
+            const cls = n.read_flag ? '' : 'unread';
+            return `<div class="admin-notification-item ${cls}"><div style="font-size:0.9rem; color:var(--gray-800)">${n.message}</div><div style="font-size:0.75rem; color:var(--gray-600); margin-top:6px">${timeAgo}</div></div>`;
+          }).join('');
+        }
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Error loading admin notifications', err);
+      }
+    }
+
+    function getTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + ' years ago';
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + ' months ago';
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + ' days ago';
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + ' hours ago';
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + ' minutes ago';
+      return 'Just now';
+    }
+
+    // Logout — show in-app confirmation then redirect to server logout route
+    function logout() {
+      showConfirm('Are you sure you want to logout?', async () => { window.location.href = "{{ url_for('logout') }}"; });
+    }
+
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+      const flashContainer = document.getElementById('flashMessages');
+      if (flashContainer) {
+        flashContainer.style.opacity = '0';
+        flashContainer.style.transform = 'translateX(-50%) translateY(-20px)';
+        setTimeout(() => {
+          flashContainer.style.display = 'none';
+        }, 300);
+      }
+    }, 5000);
+
+    // Load dashboard on page load
+    loadDashboard();
+    // ensure icons rendered
+    lucide.createIcons();
+
+    // --- Users management ---
+    // Load users for admin view
+    async function loadUsers() {
+      try {
+        const res = await fetch('/api/users');
+        if (!res.ok) {
+          console.error('Failed to load users', res.statusText);
+          return;
+        }
+        const data = await res.json();
+        const users = data.users || [];
+        // store locally for filtering
+        localStorage.setItem('admin_users', JSON.stringify(users));
+        const table = document.getElementById('usersTable');
+        if (!table) return;
+        if (users.length === 0) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <div class="empty-icon">
+                    <i data-lucide="user" style="width: 40px; height: 40px;"></i>
+                  </div>
+                  <p>No users found</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          table.innerHTML = users.map(u => `
+            <tr>
+              <td>${u.id}</td>
+              <td>${u.name || ''}</td>
+              <td>${u.email}</td>
+              <td>${u.role}</td>
+              <td>${new Date(u.created_at).toLocaleString()}</td>
+              <td>
+                <button class="action-btn btn-view" onclick="viewUser(${u.id})">
+                  <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                  View
+                </button>
+                <button class="action-btn btn-delete" onclick="deleteUser(${u.id})">
+                  <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load users', err);
+      }
+    }
+
+    // Filter users client-side
+    function filterUsers() {
+      const term = document.getElementById('searchUsers').value.toLowerCase();
+      const users = JSON.parse(localStorage.getItem('admin_users') || '[]');
+      const filtered = users.filter(u => (u.name || '').toLowerCase().includes(term) || (u.email || '').toLowerCase().includes(term));
+      const table = document.getElementById('usersTable');
+      if (!table) return;
+      if (filtered.length === 0) {
+        table.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><i data-lucide="user" style="width: 40px; height: 40px;"></i></div><p>No users found</p></div></td></tr>`;
+        return;
+      }
+      table.innerHTML = filtered.map(u => `
+        <tr>
+          <td>${u.id}</td>
+          <td>${u.name || ''}</td>
+          <td>${u.email}</td>
+          <td>${u.role}</td>
+          <td>${new Date(u.created_at).toLocaleString()}</td>
+          <td>
+            <button class="action-btn btn-view" onclick="viewUser(${u.id})">
+              <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+              View
+            </button>
+            <button class="action-btn btn-delete" onclick="deleteUser(${u.id})">
+              <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+              Delete
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Show user details in an in-app modal (replaces alert popup)
+    function viewUser(id) {
+      const users = JSON.parse(localStorage.getItem('admin_users') || '[]');
+      const u = users.find(x => x.id === id || x.id === Number(id));
+  if (!u) { showError('User not found'); return; }
+
+      const detailsHtml = `
+        <div class="detail-row">
+          <div class="detail-label">User ID</div>
+          <div class="detail-value">${u.id}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Name</div>
+          <div class="detail-value">${u.name || ''}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Email</div>
+          <div class="detail-value">${u.email}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Role</div>
+          <div class="detail-value">${u.role}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Joined</div>
+          <div class="detail-value">${new Date(u.created_at).toLocaleString()}</div>
+        </div>
+      `;
+
+      document.getElementById('userDetails').innerHTML = detailsHtml;
+      document.getElementById('userModal').classList.add('active');
+
+      // Wire delete button in modal to call delete endpoint and refresh users list
+      const deleteBtn = document.getElementById('userDeleteBtn');
+      deleteBtn.onclick = function() {
+        showConfirm('Are you sure you want to delete this user? This action cannot be undone.', async () => {
+          try {
+            const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+            const data = await res.json();
+            if (res.ok && data.success) {
+              closeModal('userModal');
+              showSuccess('User deleted');
+              loadUsers();
+            } else {
+              showError(data.message || 'Failed to delete user');
+            }
+          } catch (err) {
+            console.error('Failed to delete user', err);
+            showError('Error deleting user');
+          }
+        });
+      };
+
+      lucide.createIcons();
+    }
+
+    // Delete a user (admin-only)
+    async function deleteUser(id) {
+      showConfirm('Are you sure you want to delete this user? This action cannot be undone.', async () => {
+        try {
+          const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showSuccess('User deleted');
+            loadUsers();
+          } else {
+            showError(data.message || 'Failed to delete user');
+          }
+        } catch (err) {
+          console.error('Failed to delete user', err);
+          showError('Error deleting user');
+        }
+      });
+    }
+
+    // Poll dashboard and complaints/users periodically so admin sees new complaints
+    setInterval(() => {
+      try {
+        loadDashboard();
+        const complaintsPage = document.getElementById('complaints-page');
+        if (complaintsPage && complaintsPage.classList.contains('active')) loadComplaints();
+        const usersPage = document.getElementById('users-page');
+        if (usersPage && usersPage.classList.contains('active')) loadUsers();
+      } catch (e) { console.error(e); }
+    }, 10000);
+
+    // When navigating pages, if users page selected, load users
+    // Override showPage to call loadUsers when needed
+    const _showPage = showPage;
+    showPage = function(pageName) {
+      _showPage(pageName);
+      if (pageName === 'users') loadUsers();
+    }
+
+  </script>
+</body>
+</html>

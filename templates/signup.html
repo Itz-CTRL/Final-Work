@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SHS Alumni Portal - Sign Up</title>
+  <link rel="icon" type="image/x-icon" href="gctu.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* CSS Variables for easy customization */
+    :root {
+      --navy-blue: #1e3a8a;
+      --navy-blue-dark: #1e40af;
+      --gold: #fbbf24;
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    /* Reset default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body styling with gradient background */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-dark) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Main container */
+    .signup-container {
+      width: 100%;
+      max-width: 550px;
+    }
+
+    /* White card */
+    .signup-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Header section */
+    .card-header {
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-dark) 100%);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      background: var(--white);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--navy-blue);
+    }
+
+    .portal-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .portal-subtitle {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Form body */
+    .card-body {
+      padding: 2.5rem 2rem;
+    }
+
+    .welcome-text {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .welcome-text h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-text p {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    /* Form group */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Required field indicator */
+    .form-label.required::after {
+      content: '*';
+      color: var(--danger);
+      margin-left: 4px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-600);
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--gray-800);
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--navy-blue);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    .password-toggle:hover {
+      color: var(--navy-blue);
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--navy-blue);
+      color: var(--white);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--navy-blue-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Login link */
+    .login-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .login-link a {
+      color: var(--navy-blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Alert messages */
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .alert.show {
+      display: flex;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.75rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .card-body {
+        padding: 2rem 1.5rem;
+      }
+
+      .card-header {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="signup-card">
+      <!-- Header -->
+      <div class="card-header">
+        <div class="logo-container">
+          <i data-lucide="graduation-cap" style="width: 40px; height: 40px;"></i>
+        </div>
+        <h1 class="portal-title">SHS Alumni Portal</h1>
+        <p class="portal-subtitle">Create your alumni account</p>
+      </div>
+
+      <!-- Form Body -->
+      <div class="card-body">
+        <div class="welcome-text">
+          <h2>Join Our Community</h2>
+          <p>Fill in your details to get started</p>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="alert alert-error" id="errorAlert">
+          <i data-lucide="alert-circle" style="width: 20px; height: 20px;"></i>
+          <span id="errorMessage"></span>
+        </div>
+
+        <!-- Success Alert -->
+        <div class="alert alert-success" id="successAlert">
+          <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+          <span id="successMessage"></span>
+        </div>
+
+        <!-- Server-side flash messages (Flask) -->
+        <div id="serverMessages">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert {{ 'alert-success' if category == 'success' else 'alert-error' }} flashed-alert show" role="status">
+                  <i data-lucide="{{ 'check-circle' if category == 'success' else 'alert-circle' }}" style="width:20px; height:20px;"></i>
+                  <span style="margin-left:0.5rem;">{{ message }}</span>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+  <!-- Signup Form -->
+  <form id="signupForm" method="post" action="{{ url_for('signup') }}">
+          <!-- Full Name -->
+          <div class="form-group">
+            <label class="form-label required" for="fullName">Full Name</label>
+            <div class="input-wrapper">
+              <i data-lucide="user" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="text" 
+                id="fullName" 
+                name="fullName"
+                class="form-input" 
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label required" for="email">Email Address</label>
+            <div class="input-wrapper">
+              <i data-lucide="mail" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                class="form-input" 
+                placeholder="your.email@example.com"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label required" for="password">Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="password" 
+                id="password" 
+                name="password"
+                class="form-input" 
+                placeholder="Create a password (min 6 characters)"
+                required
+              >
+              <span class="password-toggle" id="passwordToggle">
+                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label class="form-label required" for="confirmPassword">Confirm Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon" style="width: 20px; height: 20px;"></i>
+              <input 
+                type="password" 
+                id="confirmPassword" 
+                name="confirmPassword"
+                class="form-input" 
+                placeholder="Confirm your password"
+                required
+              >
+              <span class="password-toggle" id="confirmPasswordToggle">
+                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Create Account Button -->
+          <button type="submit" class="btn btn-primary" id="signupBtn">
+            <span id="btnText">Create Account</span>
+          </button>
+        </form>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          Already have an account? <a href="{{ url_for('login') }}">Sign In</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2025 SHS Alumni Portal. All rights reserved.</p>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Get references to form elements
+    const signupForm = document.getElementById('signupForm');
+    const signupBtn = document.getElementById('signupBtn');
+    const btnText = document.getElementById('btnText');
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+
+    // PASSWORD VISIBILITY TOGGLE for Password field
+    passwordToggle.addEventListener('click', function() {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.querySelector('i').setAttribute('data-lucide', 'eye-off');
+      } else {
+        passwordInput.type = 'password';
+        passwordToggle.querySelector('i').setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    });
+
+    // PASSWORD VISIBILITY TOGGLE for Confirm Password field
+    confirmPasswordToggle.addEventListener('click', function() {
+      if (confirmPasswordInput.type === 'password') {
+        confirmPasswordInput.type = 'text';
+        confirmPasswordToggle.querySelector('i').setAttribute('data-lucide', 'eye-off');
+      } else {
+        confirmPasswordInput.type = 'password';
+        confirmPasswordToggle.querySelector('i').setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    });
+
+    // SHOW ERROR MESSAGE
+    function showError(message) {
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const successAlert = document.getElementById('successAlert');
+      
+      successAlert.classList.remove('show');
+      errorMessage.textContent = message;
+      errorAlert.classList.add('show');
+      lucide.createIcons();
+      
+      setTimeout(function() {
+        errorAlert.classList.remove('show');
+      }, 5000);
+    }
+
+    // SHOW SUCCESS MESSAGE
+    function showSuccess(message) {
+      const successAlert = document.getElementById('successAlert');
+      const successMessage = document.getElementById('successMessage');
+      const errorAlert = document.getElementById('errorAlert');
+      
+      errorAlert.classList.remove('show');
+      successMessage.textContent = message;
+      successAlert.classList.add('show');
+      lucide.createIcons();
+    }
+
+    // Signup handled by server. Keep only UI interactions (toggles, alerts) here.
+
+    // Auto-hide server flash messages with smooth transition
+    (function() {
+      const serverMessages = document.getElementById('serverMessages');
+      if (!serverMessages) return;
+      const alerts = Array.from(serverMessages.querySelectorAll('.flashed-alert'));
+      if (!alerts.length) return;
+      lucide.createIcons();
+      alerts.forEach((el, idx) => {
+        el.style.transition = 'opacity 300ms ease, transform 300ms ease, max-height 300ms ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.maxHeight = '200px';
+        setTimeout(() => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(-8px)';
+          el.style.maxHeight = '0';
+          setTimeout(() => el.remove(), 350);
+        }, 4000 + idx * 200);
+      });
+    })();
+  </script>
+</body>
+</html>

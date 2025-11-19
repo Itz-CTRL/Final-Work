@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SHS Alumni Portal - Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="gctu.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --navy-blue: #1e3a8a;
+      --navy-blue-dark: #1e40af;
+      --navy-blue-light: #3b82f6;
+      --gold: #fbbf24;
+      --gold-dark: #f59e0b;
+      --gold-light: #fde68a;
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success: #10b981;
+      --danger: #ef4444;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode {
+      --navy-blue: #60a5fa;
+      --navy-blue-dark: #3b82f6;
+      --navy-blue-light: #93c5fd;
+      --gold: #fcd34d;
+      --gold-dark: #fbbf24;
+      --white: #1f2937;
+      --gray-50: #111827;
+      --gray-100: #1f2937;
+      --gray-200: #374151;
+      --gray-300: #4b5563;
+      --gray-600: #d1d5db;
+      --gray-700: #e5e7eb;
+      --gray-800: #f3f4f6;
+      --gray-900: #f9fafb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+      color: var(--gray-800);
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+      color: var(--gray-100);
+    }
+
+    /* Header/Navbar */
+    .header {
+      background: var(--white);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+
+    .navbar {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-light) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      font-weight: 400;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      background: var(--gray-200);
+      transform: translateY(-2px);
+    }
+
+    .icon-btn.active {
+      background: var(--navy-blue);
+      color: var(--white);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--danger);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--white);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--gray-100);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .user-menu:hover {
+      background: var(--gray-200);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .user-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      line-height: 1.2;
+    }
+
+    .user-id {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+    }
+
+    .logout-btn {
+      padding: 0.625rem 1.5rem;
+      background: var(--navy-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn:hover {
+      background: var(--navy-blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--navy-blue-dark) 100%);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--white);
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .welcome-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .welcome-greeting {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .welcome-message {
+      font-size: 1rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    /* Academic Info Card */
+    .academic-info {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+    }
+
+    .academic-info-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    /* Services Section */
+    .services-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--navy-blue) 0%, var(--gold) 100%);
+      border-radius: 2px;
+    }
+
+    /* Service Cards Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--navy-blue) 0%, var(--gold) 100%);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--navy-blue);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .service-card:nth-child(1) .service-icon {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+      color: #ef4444;
+    }
+
+    .service-card:nth-child(2) .service-icon {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      color: #3b82f6;
+    }
+
+    .service-card:nth-child(3) .service-icon {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+      color: #10b981;
+    }
+
+    .service-card:nth-child(4) .service-icon {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+      color: #f59e0b;
+    }
+
+    .service-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .service-description {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    .service-arrow {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--navy-blue);
+      font-weight: 600;
+      font-size: 0.875rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover .service-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Quick Links Section */
+    .quick-links {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      margin-top: 2rem;
+    }
+
+    .quick-links-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 1rem;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .quick-link {
+      padding: 0.75rem 1rem;
+      background: var(--gray-50);
+      border-radius: 10px;
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .quick-link:hover {
+      background: var(--navy-blue);
+      color: var(--white);
+      transform: translateX(4px);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .user-info {
+        display: none;
+      }
+
+      .logout-btn span {
+        display: none;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .welcome-section {
+        padding: 1.5rem;
+      }
+
+      .welcome-greeting {
+        font-size: 1.5rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-actions {
+        gap: 0.5rem;
+      }
+
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 20px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+      padding: 2rem 2rem 1rem 2rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--gray-200);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label.required::after {
+      content: '*';
+      color: var(--danger);
+      margin-left: 4px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--gray-800);
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--navy-blue);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      margin-top: 0.25rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--navy-blue);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-300);
+    }
+
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-badge.pending {
+      background: rgba(251, 191, 36, 0.1);
+      color: #f59e0b;
+    }
+
+    .status-badge.in-progress {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .status-badge.resolved {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    /* Complaint List */
+    .complaint-item {
+      padding: 1.25rem;
+      background: var(--gray-50);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .complaint-item:hover {
+      border-color: var(--navy-blue);
+      background: var(--white);
+    }
+
+    .complaint-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.75rem;
+    }
+
+    .complaint-id {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+    }
+
+    .complaint-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .complaint-meta {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .empty-state-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      background: var(--gray-100);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+    }
+
+    .empty-state-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state-text {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    /* Success Message */
+    .success-message {
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--success);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      display: none;
+    }
+
+    .success-message.active {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+    }
+
+    .success-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 0.5rem;
+    }
+
+    .success-text {
+      font-size: 0.875rem;
+      color: var(--gray-700);
+    }
+
+    /* Alert Styles for Flash Messages */
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideDown 0.3s ease;
+      box-shadow: var(--shadow-md);
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--success);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .flash-messages-container {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1500;
+      width: 90%;
+      max-width: 600px;
+      pointer-events: none;
+    }
+
+    .flash-messages-container .alert {
+      pointer-events: auto;
+    }
+
+    /* Notifications Panel */
+    .notifications-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      z-index: 2500;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notifications-panel.active {
+      right: 0;
+    }
+
+    .notifications-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notifications-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy-blue);
+    }
+
+    .notifications-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .notification-item {
+      padding: 1rem;
+      background: var(--gray-50);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--navy-blue);
+      transition: all 0.2s ease;
+    }
+
+    .notification-item:hover {
+      background: var(--gray-100);
+      transform: translateX(-4px);
+    }
+
+    .notification-item.unread {
+      background: rgba(30, 58, 138, 0.05);
+      border-left-color: var(--gold);
+    }
+
+    .notification-message {
+      font-size: 0.875rem;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .notification-time {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+    }
+
+    .notifications-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
+      z-index: 2400;
+      display: none;
+    }
+
+    .notifications-overlay.active {
+      display: block;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .service-card {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .service-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .service-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .service-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .service-card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    @media (max-width: 768px) {
+      .modal {
+        max-width: 100%;
+        margin: 1rem;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i data-lucide="graduation-cap" style="width: 28px; height: 28px;"></i>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">SHS Alumni Portal</div>
+          <div class="brand-subtitle">Senior High School Alumni Services</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle dark mode">
+          <i data-lucide="sun" style="width: 20px; height: 20px;"></i>
+        </button>
+        
+        <button class="icon-btn" id="notifications-btn" title="Notifications" onclick="toggleNotifications()">
+          <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
+          <span class="notification-badge" id="notificationCount">0</span>
+        </button>
+        
+        <button class="icon-btn" title="Help & Support">
+          <i data-lucide="circle-help" style="width: 20px; height: 20px;"></i>
+        </button>
+
+        <div class="user-menu">
+          <div class="user-avatar">{{ (session.get('name','')[:2] or 'U')|upper }}</div>
+          <div class="user-info">
+            <div class="user-name">{{ session.get('name','') }}</div>
+            <div class="user-id">{{ session.get('role','')|capitalize }}{% if session.get('role') == 'student' %} • Class of {{ session.get('graduation_year','2020') }}{% endif %}</div>
+          </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+          <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  {# Flash messages from Flask (success/error) - Fixed position at top #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages-container" id="flashMessages">
+        {% for category, message in messages %}
+          <div class="alert {{ 'alert-success' if category == 'success' else 'alert-error' }}">
+            <i data-lucide="{{ 'check-circle' if category == 'success' else 'alert-circle' }}" style="width:20px; height:20px;"></i>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Notifications Panel -->
+  <div class="notifications-overlay" id="notificationsOverlay" onclick="toggleNotifications()"></div>
+  <div class="notifications-panel" id="notificationsPanel">
+    <div class="notifications-header">
+      <h3 class="notifications-title">Notifications</h3>
+      <button class="modal-close" onclick="toggleNotifications()">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+    <div class="notifications-body" id="notificationsBody">
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i data-lucide="bell-off" style="width: 40px; height: 40px;"></i>
+        </div>
+        <div class="empty-state-title">No notifications</div>
+        <div class="empty-state-text">You're all caught up!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+      <div class="welcome-content">
+        <h1 class="welcome-greeting">Welcome back, {{ session.get('name','') }}!</h1>
+        <p class="welcome-message">Access your alumni services and stay connected with your alma mater</p>
+      </div>
+    </section>
+
+    <!-- Academic Information -->
+    <section class="academic-info">
+      <h2 class="academic-info-title">
+        <i data-lucide="graduation-cap" style="width: 24px; height: 24px;"></i>
+        Alumni Information
+      </h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Alumni ID</span>
+          <span class="info-value">ALM2020001</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Programme Completed</span>
+          <span class="info-value">General Science</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Year of Graduation</span>
+          <span class="info-value">2020</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Final Grade</span>
+          <span class="info-value">Aggregate 8</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">House</span>
+          <span class="info-value">Blue House</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Membership Status</span>
+          <span class="info-value">Active</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+      <h2 class="section-title">Alumni Services</h2>
+      
+      <div class="services-grid">
+        <!-- Make a Complaint -->
+        <div class="service-card" onclick="openModal('complaintModal')">
+          <div class="service-icon">
+            <i data-lucide="message-square-text" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 class="service-title">Submit Feedback</h3>
+          <p class="service-description">Share your feedback, concerns, or suggestions to help improve alumni services.</p>
+          <div class="service-arrow">
+            Get Started
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </div>
+        </div>
+
+        <!-- Track Complaint -->
+        <div class="service-card" onclick="openModal('trackModal')">
+          <div class="service-icon">
+            <i data-lucide="file-search" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 class="service-title">Track Requests</h3>
+          <p class="service-description">Check the status of your submitted feedback and document requests.</p>
+          <div class="service-arrow">
+            Track Now
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </div>
+        </div>
+
+        <!-- Request Transcript -->
+        <div class="service-card" onclick="openModal('transcriptModal')">
+          <div class="service-icon">
+            <i data-lucide="file-text" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 class="service-title">Request Transcript</h3>
+          <p class="service-description">Request your official academic transcript for employment, further studies, or other purposes.</p>
+          <div class="service-arrow">
+            Request Now
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </div>
+        </div>
+
+        <!-- Request Testimonial -->
+        <div class="service-card" onclick="openModal('testimonialModal')">
+          <div class="service-icon">
+            <i data-lucide="award" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 class="service-title">Request Testimonial</h3>
+          <p class="service-description">Request a character reference or testimonial letter from your alma mater.</p>
+          <div class="service-arrow">
+            Request Now
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="quick-links">
+      <h3 class="quick-links-title">Quick Links</h3>
+      <div class="links-grid">
+        <a href="#" class="quick-link">
+          <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+          My Profile
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="users" style="width: 16px; height: 16px;"></i>
+          Alumni Directory
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="calendar-days" style="width: 16px; height: 16px;"></i>
+          Events & Reunions
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i>
+          Career Opportunities
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+          Give Back / Donate
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="newspaper" style="width: 16px; height: 16px;"></i>
+          Alumni Newsletter
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="settings" style="width: 16px; height: 16px;"></i>
+          Settings
+        </a>
+        <a href="#" class="quick-link">
+          <i data-lucide="life-buoy" style="width: 16px; height: 16px;"></i>
+          Support Center
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modals -->
+  
+  <!-- Make Complaint Modal -->
+  <div class="modal-overlay" id="complaintModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i data-lucide="message-square-text" style="width: 28px; height: 28px;"></i>
+          Submit Feedback
+        </h2>
+        <button class="modal-close" onclick="closeModal('complaintModal')">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="complaintForm" onsubmit="submitComplaint(event)">
+          <div class="form-group">
+            <label class="form-label required">Category</label>
+            <select class="form-select" required>
+            <option value="">Select a category</option>
+              <option value="services">Alumni Services</option>
+              <option value="events">Events & Reunions</option>
+              <option value="website">Website/Portal Issues</option>
+              <option value="documentation">Document Requests</option>
+              <option value="suggestion">Suggestion</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Subject</label>
+            <input type="text" class="form-input" placeholder="Brief description of your feedback" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Description</label>
+            <textarea class="form-textarea" placeholder="Provide detailed information about your feedback..." required></textarea>
+            <div class="form-help">Please provide as much detail as possible to help us address your feedback.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select class="form-select">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="success-message" id="complaintSuccess">
+          <div class="success-icon">
+            <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+          </div>
+          <div class="success-title">Feedback Submitted!</div>
+          <div class="success-text">Your feedback has been successfully submitted. Reference ID: <strong>FDB-2025-001</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('complaintModal')">Cancel</button>
+        <button type="submit" form="complaintForm" class="btn btn-primary">
+          <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+          Submit Feedback
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Track Complaint Modal -->
+  <div class="modal-overlay" id="trackModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i data-lucide="file-search" style="width: 28px; height: 28px;"></i>
+          Track Requests
+        </h2>
+        <button class="modal-close" onclick="closeModal('trackModal')">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Search by Reference ID</label>
+          <input type="text" class="form-input" placeholder="Enter request ID (e.g., FDB-2025-001, TRN-2025-001)">
+        </div>
+
+        <div id="complaintsList">
+          <div class="complaint-item">
+            <div class="complaint-header">
+              <div>
+                <div class="complaint-id">TRN-2025-001</div>
+                <div class="complaint-title">Official Transcript Request</div>
+              </div>
+              <span class="status-badge in-progress">
+                <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                Processing
+              </span>
+            </div>
+            <div class="complaint-meta">
+              Submitted: Jan 15, 2025 • Type: Transcript
+            </div>
+          </div>
+
+          <div class="complaint-item">
+            <div class="complaint-header">
+              <div>
+                <div class="complaint-id">TST-2024-089</div>
+                <div class="complaint-title">Testimonial for Job Application</div>
+              </div>
+              <span class="status-badge resolved">
+                <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+                Completed
+              </span>
+            </div>
+            <div class="complaint-meta">
+              Submitted: Dec 20, 2024 • Type: Testimonial
+            </div>
+          </div>
+
+          <div class="complaint-item">
+            <div class="complaint-header">
+              <div>
+                <div class="complaint-id">FDB-2024-078</div>
+                <div class="complaint-title">Alumni Portal Improvement Suggestion</div>
+              </div>
+              <span class="status-badge pending">
+                <i data-lucide="alert-circle" style="width: 14px; height: 14px;"></i>
+                Under Review
+              </span>
+            </div>
+            <div class="complaint-meta">
+              Submitted: Dec 10, 2024 • Type: Feedback
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('trackModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Transcript Modal -->
+  <div class="modal-overlay" id="transcriptModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i data-lucide="file-text" style="width: 28px; height: 28px;"></i>
+          Request Transcript
+        </h2>
+        <button class="modal-close" onclick="closeModal('transcriptModal')">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="transcriptForm" onsubmit="submitTranscript(event)">
+          <div class="form-group">
+            <label class="form-label required">Transcript Type</label>
+            <select class="form-select" required>
+              <option value="">Select type</option>
+              <option value="official">Official Transcript</option>
+              <option value="unofficial">Unofficial Transcript</option>
+              <option value="partial">Partial Transcript</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Number of Copies</label>
+            <input type="number" class="form-input" min="1" max="10" value="1" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Delivery Method</label>
+            <select class="form-select" required>
+              <option value="">Select delivery method</option>
+              <option value="pickup">Pick up at School</option>
+              <option value="email">Email (PDF)</option>
+              <option value="mail">Postal Mail</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">E-Voucher Code</label>
+            <input type="text" class="form-input" placeholder="Enter your payment voucher code" required>
+            <div class="form-help">Enter the voucher code received after payment (e.g., VOC-2025-XXXX)</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Additional Notes</label>
+            <textarea class="form-textarea" placeholder="Any special instructions or requirements..."></textarea>
+          </div>
+        </form>
+
+        <div class="success-message" id="transcriptSuccess">
+          <div class="success-icon">
+            <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+          </div>
+          <div class="success-title">Request Submitted!</div>
+          <div class="success-text">Your transcript request has been received. Processing time: 3-5 business days. Reference: <strong>TRN-2025-001</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('transcriptModal')">Cancel</button>
+        <button type="submit" form="transcriptForm" class="btn btn-primary">
+          <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+          Submit Request
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Testimonial Modal -->
+  <div class="modal-overlay" id="testimonialModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i data-lucide="award" style="width: 28px; height: 28px;"></i>
+          Request Testimonial
+        </h2>
+        <button class="modal-close" onclick="closeModal('testimonialModal')">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="testimonialForm" onsubmit="submitTestimonial(event)">
+          <div class="form-group">
+            <label class="form-label required">Purpose</label>
+            <select class="form-select" required>
+              <option value="">Select purpose</option>
+              <option value="university">University Application</option>
+              <option value="scholarship">Scholarship Application</option>
+              <option value="employment">Employment</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Addressed To</label>
+            <input type="text" class="form-input" placeholder="e.g., Admissions Office, University of Ghana" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Number of Copies</label>
+            <input type="number" class="form-input" min="1" max="5" value="1" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">Collection Method</label>
+            <select class="form-select" required>
+              <option value="">Select collection method</option>
+              <option value="pickup">Pick up at School Office</option>
+              <option value="email">Email (PDF)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required">E-Voucher Code</label>
+            <input type="text" class="form-input" placeholder="Enter your payment voucher code" required>
+            <div class="form-help">Enter the voucher code received after payment (e.g., VOC-2025-XXXX)</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Special Requirements</label>
+            <textarea class="form-textarea" placeholder="Any specific information you'd like included..."></textarea>
+          </div>
+        </form>
+
+        <div class="success-message" id="testimonialSuccess">
+          <div class="success-icon">
+            <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+          </div>
+          <div class="success-title">Request Submitted!</div>
+          <div class="success-text">Your testimonial request has been received. Processing time: 5-7 business days. Reference: <strong>TST-2025-001</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('testimonialModal')">Cancel</button>
+        <button type="submit" form="testimonialForm" class="btn btn-primary">
+          <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+          Submit Request
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <!-- Logout Confirmation Modal (in-app, replaces browser confirm) -->
+  <div class="modal-overlay" id="logoutConfirmModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i data-lucide="log-out" style="width: 28px; height: 28px;"></i>
+          Confirm Logout
+        </h2>
+        <button class="modal-close" onclick="closeModal('logoutConfirmModal')">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to log out?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('logoutConfirmModal')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="performLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Senior High School Alumni Portal. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Expose current user email from server session (rendered by Flask)
+    const CURRENT_USER_EMAIL = "{{ session.get('email', '') }}";
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const themeIcon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeIcon.setAttribute('data-lucide', 'moon');
+      lucide.createIcons();
+    }
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeIcon.setAttribute('data-lucide', 'moon');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeIcon.setAttribute('data-lucide', 'sun');
+        localStorage.setItem('theme', 'light');
+      }
+      
+      lucide.createIcons();
+    });
+
+    // Modal functions
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Reinitialize icons for the modal
+      setTimeout(() => {
+        lucide.createIcons();
+      }, 100);
+      // If opening the track requests modal, load the student's requests
+      if (modalId === 'trackModal') loadStudentRequests();
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      
+      // Reset forms and hide success messages
+      const form = modal.querySelector('form');
+      if (form) form.reset();
+      
+      const successMsg = modal.querySelector('.success-message');
+      if (successMsg) successMsg.classList.remove('active');
+    }
+
+    // Close modal when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          closeModal(overlay.id);
+        }
+      });
+    });
+
+    // Form submission functions
+    async function submitComplaint(event) {
+      event.preventDefault();
+      const form = event.target;
+      const modal = form.closest('.modal');
+      const successMsg = modal.querySelector('#complaintSuccess');
+
+      const category = form.querySelector('select').value;
+      const title = form.querySelector('input[type="text"]').value;
+      const description = form.querySelector('textarea').value;
+      const priority = form.querySelectorAll('select')[1].value || 'medium';
+
+      try {
+        const res = await fetch('/api/complaints', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ student_email: CURRENT_USER_EMAIL, category, title, description, priority })
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.style.display = 'none';
+          successMsg.classList.add('active');
+          lucide.createIcons();
+          setTimeout(() => { closeModal('complaintModal'); form.style.display = 'block'; }, 2000);
+        } else {
+          // show non-blocking in-app error message
+          showError('Failed to submit complaint');
+        }
+      } catch (err) {
+        showError('Error submitting complaint');
+      }
+    }
+
+    async function submitTranscript(event) {
+      event.preventDefault();
+      const form = event.target;
+      const modal = form.closest('.modal');
+      const successMsg = modal.querySelector('#transcriptSuccess');
+
+      const type = form.querySelector('select').value;
+      const copies = form.querySelector('input[type="number"]').value;
+      const delivery = form.querySelectorAll('select')[1].value;
+      const voucher = form.querySelector('input[type="text"]').value;
+      const notes = form.querySelector('textarea') ? form.querySelector('textarea').value : '';
+
+      try {
+        const res = await fetch('/api/transcripts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ student_email: CURRENT_USER_EMAIL, type, copies, delivery_method: delivery, voucher_code: voucher, notes })
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.style.display = 'none';
+          successMsg.classList.add('active');
+          lucide.createIcons();
+          setTimeout(() => { closeModal('transcriptModal'); form.style.display = 'block'; }, 2000);
+        } else {
+          showError('Failed to submit transcript request');
+        }
+      } catch (err) {
+        showError('Error submitting transcript request');
+      }
+    }
+
+    async function submitTestimonial(event) {
+      event.preventDefault();
+      const form = event.target;
+      const modal = form.closest('.modal');
+      const successMsg = modal.querySelector('#testimonialSuccess');
+
+      const purpose = form.querySelector('select').value;
+      const addressedTo = form.querySelector('input[type="text"]').value;
+      const copies = form.querySelector('input[type="number"]').value;
+      const method = form.querySelectorAll('select')[1].value;
+      const voucher = form.querySelector('input[type="text"]') ? form.querySelector('input[type="text"]').value : '';
+      const notes = form.querySelector('textarea') ? form.querySelector('textarea').value : '';
+
+      try {
+        // Reuse transcripts endpoint for testimonials (type = testimonial)
+        const res = await fetch('/api/transcripts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ student_email: CURRENT_USER_EMAIL, type: 'testimonial', copies, delivery_method: method, voucher_code: voucher, notes })
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.style.display = 'none';
+          successMsg.classList.add('active');
+          lucide.createIcons();
+          setTimeout(() => { closeModal('testimonialModal'); form.style.display = 'block'; }, 2000);
+        } else {
+          showError('Failed to submit testimonial request');
+        }
+      } catch (err) {
+        showError('Error submitting testimonial request');
+      }
+    }
+
+    // In-app logout confirmation (replace browser confirm())
+    function logout() {
+      openModal('logoutConfirmModal');
+    }
+
+    function performLogout() {
+      // Redirect to server logout route
+      window.location.href = "{{ url_for('logout') }}";
+    }
+
+    // Utility: show in-app flash messages dynamically
+    function _ensureFlashContainer() {
+      let container = document.getElementById('flashMessages');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'flashMessages';
+        container.className = 'flash-messages-container';
+        document.body.appendChild(container);
+      }
+      return container;
+    }
+
+    function showError(message, timeout = 5000) {
+      const container = _ensureFlashContainer();
+      const el = document.createElement('div');
+      el.className = 'alert alert-error';
+      el.innerHTML = `<i data-lucide="alert-circle" style="width:20px; height:20px;"></i><span>${message}</span>`;
+      container.appendChild(el);
+      lucide.createIcons();
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 320);
+      }, timeout);
+    }
+
+    function showSuccess(message, timeout = 4000) {
+      const container = _ensureFlashContainer();
+      const el = document.createElement('div');
+      el.className = 'alert alert-success';
+      el.innerHTML = `<i data-lucide="check-circle" style="width:20px; height:20px;"></i><span>${message}</span>`;
+      container.appendChild(el);
+      lucide.createIcons();
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 320);
+      }, timeout);
+    }
+
+    // Simple in-app confirm dialog using modal (avoids browser confirm)
+    function showConfirm(message, onConfirm) {
+      let conf = document.getElementById('inAppConfirmModal');
+      if (!conf) {
+        conf = document.createElement('div');
+        conf.className = 'modal-overlay';
+        conf.id = 'inAppConfirmModal';
+        conf.innerHTML = `
+          <div class="modal">
+            <div class="modal-header"><h3 class="modal-title">Confirm</h3></div>
+            <div class="modal-body"><p id="inAppConfirmMessage"></p></div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" id="inAppConfirmCancel">Cancel</button>
+              <button class="btn btn-primary" id="inAppConfirmOk">OK</button>
+            </div>
+          </div>`;
+        document.body.appendChild(conf);
+        document.getElementById('inAppConfirmCancel').addEventListener('click', () => { conf.classList.remove('active'); });
+      }
+      document.getElementById('inAppConfirmMessage').textContent = message;
+      conf.classList.add('active');
+      const okBtn = document.getElementById('inAppConfirmOk');
+      const handler = async () => {
+        try { await onConfirm(); } finally { conf.classList.remove('active'); okBtn.removeEventListener('click', handler); }
+      };
+      okBtn.addEventListener('click', handler);
+    }
+
+    // Load student's transcript/testimonial requests into the Track Requests modal
+    async function loadStudentRequests() {
+      try {
+        const res = await fetch(`/api/transcripts?email=${encodeURIComponent(CURRENT_USER_EMAIL)}`);
+        const data = await res.json();
+        const transcripts = data.transcripts || [];
+        const list = document.getElementById('complaintsList');
+        if (!transcripts.length) {
+          list.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i data-lucide="inbox" style="width:40px;height:40px"></i></div><div class="empty-state-title">No requests found</div><div class="empty-state-text">You have not submitted any requests yet.</div></div>`;
+        } else {
+          list.innerHTML = transcripts.map(t => `
+            <div class="complaint-item" data-id="${t.id}">
+              <div class="complaint-header">
+                <div>
+                  <div class="complaint-id">TRN-${String(t.id).padStart(4,'0')}</div>
+                  <div class="complaint-title">${(t.type || 'Transcript').charAt(0).toUpperCase() + (t.type || 'Transcript').slice(1)}</div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center">
+                  <span class="status-badge ${t.status}">${t.status}</span>
+                  <button class="btn btn-secondary" onclick="deleteTranscript(${t.id})">Delete</button>
+                </div>
+              </div>
+              <div class="complaint-meta">Submitted: ${new Date(t.created_at).toLocaleString()} • Voucher: ${t.voucher_code || '—'}</div>
+            </div>
+          `).join('');
+        }
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Failed to load requests', err);
+        showError('Failed to load your requests');
+      }
+    }
+
+    // Delete a transcript request (student or admin allowed)
+    async function deleteTranscript(id) {
+      showConfirm('Are you sure you want to delete this request? This cannot be undone.', async () => {
+        try {
+          const res = await fetch(`/api/transcripts/${id}`, { method: 'DELETE' });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showSuccess('Request deleted');
+            loadStudentRequests();
+          } else {
+            showError(data.message || 'Failed to delete request');
+          }
+        } catch (err) {
+          console.error('Failed to delete request', err);
+          showError('Error deleting request');
+        }
+      });
+    }
+
+    // Notifications functionality
+    function toggleNotifications() {
+      const panel = document.getElementById('notificationsPanel');
+      const overlay = document.getElementById('notificationsOverlay');
+      const isActive = panel.classList.contains('active');
+      
+      if (isActive) {
+        panel.classList.remove('active');
+        overlay.classList.remove('active');
+      } else {
+        panel.classList.add('active');
+        overlay.classList.add('active');
+        // Mark all notifications as read for this user when opening the panel so the unread marker goes away
+        markAllNotificationsRead().then(() => loadNotifications());
+      }
+      
+      lucide.createIcons();
+    }
+
+    async function loadNotifications() {
+      try {
+        const res = await fetch(`/api/notifications?email=${CURRENT_USER_EMAIL}`);
+        const data = await res.json();
+        const notifications = data.notifications || [];
+        
+        const notificationsBody = document.getElementById('notificationsBody');
+        const notificationCount = document.getElementById('notificationCount');
+        
+        // Update badge count
+        const unreadCount = notifications.filter(n => !n.read_flag).length;
+        notificationCount.textContent = unreadCount;
+        notificationCount.style.display = unreadCount > 0 ? 'flex' : 'none';
+        
+        if (notifications.length === 0) {
+          notificationsBody.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i data-lucide="bell-off" style="width: 40px; height: 40px;"></i>
+              </div>
+              <div class="empty-state-title">No notifications</div>
+              <div class="empty-state-text">You're all caught up!</div>
+            </div>
+          `;
+        } else {
+          notificationsBody.innerHTML = notifications.map(n => {
+            const date = new Date(n.created_at);
+            const timeAgo = getTimeAgo(date);
+            return `
+              <div class="notification-item ${!n.read_flag ? 'unread' : ''}">
+                <div class="notification-message">${n.message}</div>
+                <div class="notification-time">${timeAgo}</div>
+              </div>
+            `;
+          }).join('');
+        }
+        
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Error loading notifications:', err);
+      }
+    }
+
+    // Mark all notifications read for current user (called when opening panel)
+    async function markAllNotificationsRead() {
+      try {
+        if (!CURRENT_USER_EMAIL) return;
+        await fetch('/api/notifications/mark_read', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: CURRENT_USER_EMAIL, all: true })
+        });
+        // update badge immediately
+        const notificationCount = document.getElementById('notificationCount');
+        notificationCount.textContent = 0;
+        notificationCount.style.display = 'none';
+      } catch (err) {
+        console.error('Failed to mark notifications read', err);
+      }
+    }
+
+    function getTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + ' years ago';
+      
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + ' months ago';
+      
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + ' days ago';
+      
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + ' hours ago';
+      
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + ' minutes ago';
+      
+      return 'Just now';
+    }
+
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+      const flashContainer = document.getElementById('flashMessages');
+      if (flashContainer) {
+        flashContainer.style.opacity = '0';
+        flashContainer.style.transform = 'translateX(-50%) translateY(-20px)';
+        setTimeout(() => {
+          flashContainer.style.display = 'none';
+        }, 300);
+      }
+    }, 5000);
+
+    // Load notifications count on page load
+    loadNotifications();
+
+    // Add smooth scroll behavior
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
